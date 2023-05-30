@@ -31,10 +31,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUser() {
-        User user=new User();
-        user.setFirstName("Mohit");
-        user.setLastName("Yadav");
+    public String createUser(@RequestBody User user) {
+        user.setFirstName(user.getFirstName());
+        user.setLastName(user.getLastName());
         AddressData addressData = new AddressData(restTemplate);
         AddressEntries response = addressData.fetchDataFromApi();
         user.setAddress(response.getFull_address());
