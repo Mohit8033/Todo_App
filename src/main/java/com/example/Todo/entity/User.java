@@ -19,6 +19,9 @@ public class User {
     public User() {
     }
 
+    public void addTodo(Todo todo) {
+        todoList.add(todo);
+    }
     public User(int id, String firstName, String lastName, String address, List<Todo> todoList) {
         this.id = id;
         this.firstName = firstName;

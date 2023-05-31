@@ -50,7 +50,7 @@ public class UserController {
         userDTO.setAddress(user.getAddress());
         return userDTO;
     }
-    @GetMapping("todos/{userId}")
+    @GetMapping("/todos/{userId}")
     public List<Todo> getTodo(@PathVariable int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException());
         List<Todo> todos = user.getTodoList();
@@ -68,10 +68,12 @@ public class UserController {
         return user.getTodoList();
     }
     @PutMapping("/edit/{userId}")
-    public String editUser(@PathVariable int userid){
-        User user=userRepository.findById(userid).orElseThrow(()-> new NoSuchElementException());
-        user.setFirstName("Ankur");
-        userRepository.save(user);
+    public String editUser(@PathVariable int userId,@RequestBody User user){
+        User user1=userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException());
+        user1.setFirstName(user.getFirstName());
+        user1.setLastName(user.getLastName());
+        userRepository.save(user1);
         return "Updated User Details";
     }
+
 }

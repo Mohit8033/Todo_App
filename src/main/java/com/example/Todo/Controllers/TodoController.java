@@ -6,9 +6,7 @@ import com.example.Todo.repository.TodoRepo;
 import com.example.Todo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,24 +14,20 @@ import java.util.NoSuchElementException;
 @RequestMapping("/todo")
 public class TodoController {
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
     private UserRepo userRepository;
     @Autowired
     private TodoRepo todoRepository;
 
-    public TodoController(RestTemplate restTemplate, UserRepo userRepository, TodoRepo todoRepository) {
-        this.restTemplate = restTemplate;
+    public TodoController(UserRepo userRepository, TodoRepo todoRepository) {
         this.userRepository = userRepository;
         this.todoRepository = todoRepository;
     }
 
-    @PostMapping("add/{userId}")
-    public String addTodo(@PathVariable int userid){
-        Todo todo=new Todo();
-        User user=userRepository.findById(userid).orElseThrow(()-> new NoSuchElementException());
-        todo.setDescription("Lunch");
-        user.getTodoList().add(todo);
+    @PostMapping("/{userId}/add")
+    public String addTodo(@PathVariable int userId, @RequestBody Todo todo){
+        User user=userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException());
+        todo.setDescription(todo.getDescription());
+        user.addTodo(todo);
         userRepository.save(user);
         return "Todo Added";
     }

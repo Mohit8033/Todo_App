@@ -24,6 +24,7 @@ public class Todo {
         this.deleted = deleted;
     }
 
+
     public int getId() {
         return id;
     }
