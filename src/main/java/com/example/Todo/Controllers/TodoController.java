@@ -5,6 +5,7 @@ import com.example.Todo.entity.User;
 import com.example.Todo.repository.TodoRepo;
 import com.example.Todo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class TodoController {
     @Autowired
     private TodoRepo todoRepository;
 
-    public TodoController(UserRepo userRepository, TodoRepo todoRepository) {
+    @Autowired
+    KafkaTemplate<String,String> kafkaTemplate;
+
+    public TodoController(UserRepo userRepository, TodoRepo todoRepository, KafkaTemplate<String, String> kafkaTemplate) {
         this.userRepository = userRepository;
         this.todoRepository = todoRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @PostMapping("/{userId}/add")
@@ -29,6 +34,7 @@ public class TodoController {
         todo.setDescription(todo.getDescription());
         user.addTodo(todo);
         userRepository.save(user);
+        kafkaTemplate.send("NewTodo","New Todo Created :)");
         return "Todo Added";
     }
     @PutMapping("/update/{userId}/{todoId}")//put

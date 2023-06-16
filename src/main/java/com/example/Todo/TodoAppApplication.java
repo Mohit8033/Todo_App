@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -26,6 +27,8 @@ public class TodoAppApplication implements CommandLineRunner  {
     private TodoRepo todoRepository;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    KafkaTemplate<String,String> kafkaTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(TodoAppApplication.class, args);
